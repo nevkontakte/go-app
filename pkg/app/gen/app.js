@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------------
 // go-app
 // -----------------------------------------------------------------------------
-var goappNav = function () {};
-var goappOnUpdate = function () {};
-var goappOnAppInstallChange = function () {};
+var goappNav = function () { };
+var goappOnUpdate = function () { };
+var goappOnAppInstallChange = function () { };
 
-const goappEnv = {{.Env}};
+const goappEnv = {{.Env }};
 const goappLoadingLabel = "{{.LoadingLabel}}";
 const goappWasmContentLengthHeader = "{{.WasmContentLengthHeader}}";
 
@@ -15,7 +15,7 @@ let deferredPrompt = null;
 goappInitServiceWorker();
 goappWatchForUpdate();
 goappWatchForInstallable();
-goappInitWebAssembly();
+goappInitGopherJS();
 
 // -----------------------------------------------------------------------------
 // Service Worker
@@ -238,7 +238,7 @@ async function fetchWithProgress(url, progess) {
   let contentLength;
   try {
     contentLength = response.headers.get(goappWasmContentLengthHeader);
-  } catch {}
+  } catch { }
   if (!goappWasmContentLengthHeader || !contentLength) {
     contentLength = response.headers.get("Content-Length");
   }
@@ -255,7 +255,7 @@ async function fetchWithProgress(url, progess) {
       {
         async start(controller) {
           var reader = response.body.getReader();
-          for (;;) {
+          for (; ;) {
             var { done, value } = await reader.read();
 
             if (done) {
@@ -282,4 +282,11 @@ async function fetchWithProgress(url, progess) {
   }
 
   return res;
+}
+
+function goappInitGopherJS() {
+  const loader = document.createElement('script');
+  loader.setAttribute("src", "/web/app.js");
+  loader.setAttribute("defer", "true");
+  document.body.appendChild(loader);
 }
